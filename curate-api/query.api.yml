@@ -100,6 +100,17 @@ paths:
           in: query
           description: Custom query string for filtering results
           type: string
+        - name: offset
+          in: query
+          type: integer
+          description: Pagination offset
+          default: 0
+        - name: n
+          in: query
+          type: integer
+          description: Request this many
+          maximum: 100
+          default: 20
       responses:
         200:
           description: An array of ObjectInfo
@@ -108,6 +119,7 @@ paths:
 definitions:
   AccessIdentifier:
     type: string
+    description: In the future it will be of the form "<type>:<value>" where type might be netid, group, agent, or orcid and value might be dbrower, "ETD Editors", 0001-0002-0003-0004, etc.
   AccessRights:
     type: object
     required:
@@ -128,12 +140,17 @@ definitions:
   Error:
     allOf:
       - $ref: '#/definitions/StubObject'
+    required:
+      - message
+      - status_code
     properties:
       message:
         type: string
       status_code:
         type: string
       error_code:
+        type: string
+      error_class:
         type: string
   FileDigest:
     type: object
