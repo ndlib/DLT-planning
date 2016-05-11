@@ -2,7 +2,15 @@
 swagger: '2.0'
 info:
   title: CurateND Query API
+  description: |
+    Prototype of the CurateND Query API. This is a work in progress.
   version: "0.0.0"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: CurateND support team
+    email: curate@nd.edu
 schemes:
   - https
 basePath: /api/v0
@@ -10,23 +18,75 @@ consumes:
   - application/json
 produces:
   - application/json
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+    description: You can request an API key by contacting Don Brower.
 paths:
   /object/{id}:
     get:
+      security:
+        - api_key: []
       summary: Get Object Info
       parameters:
         - name: id
           in: path
           required: true
           description: The opaque identifier (e.g Noid) of the object to retrieve
-          type: string # You may want to ref Noid, but it appears that query parameter objects must be primatives
+          type: string
       responses:
         200:
           description: An ObjectInfo
           schema:
             $ref: '#/definitions/ObjectInfo'
+  /object/{id}/content:
+    get:
+      security:
+        - api_key: []
+      tags:
+        - Binary Files
+      summary: This endpoint is used to retrieve the contents of a `file` object. Calling it on non-file objects will return a 404 error. The unversioned path will return the most current version.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The opaque identifier (e.g Noid) of the object to retrieve
+          type: string
+      responses:
+        200:
+          description: Retrieve the binary contents of the given file.
+          schema:
+            type: string
+            format: binary
+        404: # Could this be 422 for non-file objects?
+          description: A non-file object or non-existent object was requested.
+          schema:
+            $ref: '#/definitions/Error'
+  /objects/{id}/thumbnail:
+    get:
+      security:
+        - api_key: []
+      tags:
+        - Binary Files
+      summary: Returns the thumbnail image for a collection, work, or file. For a work the thumbnail returned is that of the work’s representative image.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The opaque identifier (e.g Noid) of the object to retrieve
+          type: string
+      responses:
+        200:
+          description: Retrieved binary contents of the thumbnail
+          schema:
+            type: string
+            format: binary
   /objects:
     get:
+      security:
+        - api_key: []
       summary: Get Objects Info
       parameters:
         - name: ids
@@ -63,6 +123,16 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/AccessIdentifier'
+  Error:
+    allOf:
+      - $ref: '#/definitions/StubObject'
+    properties:
+      message:
+        type: string
+      status_code:
+        type: string
+      error_code:
+        type: string
   FileDigest:
     type: object
     properties:
@@ -72,24 +142,16 @@ definitions:
         type: string
   Noid:
     type: string
-  ObjectInfo:
-    type: object
+  ObjectInfo: # TODO: Differentiate File, Work, and Collection
+    allOf:
+      - $ref: '#/definitions/StubObject'
     required:
-      - "@context"
-      - class
-      - id
       - access
       - owner
       - depositor
       - date-added
       - date-modified
     properties:
-      "@context":
-        type: string
-      id:
-        $ref: '#/definitions/Noid'
-      class:
-        type: string
       access:
         $ref: '#/definitions/AccessRights'
       owner:
@@ -116,3 +178,17 @@ definitions:
         $ref: '#/definitions/Noid'
       digest:
         $ref: '#/definitions/FileDigest'
+  StubObject:
+    discriminator: class
+    type: object
+    required:
+      - "@context"
+      - class
+      - id
+    properties:
+      "@context":
+        type: string
+      id:
+        $ref: '#/definitions/Noid'
+      class:
+        type: string
