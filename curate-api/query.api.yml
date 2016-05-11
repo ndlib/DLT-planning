@@ -96,13 +96,15 @@ paths:
           collectionFormat: csv
           items:
             type: string
+        - name: q
+          in: query
+          description: Custom query string for filtering results
+          type: string
       responses:
         200:
           description: An array of ObjectInfo
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/ObjectInfo'
+            $ref: '#/definitions/ObjectsQueryResult'
 definitions:
   AccessIdentifier:
     type: string
@@ -178,6 +180,37 @@ definitions:
         $ref: '#/definitions/Noid'
       digest:
         $ref: '#/definitions/FileDigest'
+  ObjectsQueryResult:
+    properties:
+      "@context":
+        type: string
+      query:
+        type: string
+        description: The query string that was provided
+      totalItems:
+        type: integer
+      startingOffset:
+        type: integer
+      results:
+        type: array
+        items:
+          $ref: "#/definitions/StubObject"
+      pagination:
+        $ref: '#/definitions/Pagination'
+  Pagination:
+    properties:
+      first:
+        type: string
+        description: URL to the first page of the results
+      previous:
+        type: string
+        description: URL to the previous page of the results
+      next:
+        type: string
+        description: URL to the next page of the results
+      last:
+        type: string
+        description: URL to the last page of the results
   StubObject:
     discriminator: class
     type: object
