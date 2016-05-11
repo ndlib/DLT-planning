@@ -1,0 +1,118 @@
+# Built using the [swagger.io editor](http://editor.swagger.io/#/)
+swagger: '2.0'
+info:
+  title: CurateND Query API
+  version: "0.0.0"
+schemes:
+  - https
+basePath: /api/v0
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /object/{id}:
+    get:
+      summary: Get Object Info
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The opaque identifier (e.g Noid) of the object to retrieve
+          type: string # You may want to ref Noid, but it appears that query parameter objects must be primatives
+      responses:
+        200:
+          description: An ObjectInfo
+          schema:
+            $ref: '#/definitions/ObjectInfo'
+  /objects:
+    get:
+      summary: Get Objects Info
+      parameters:
+        - name: ids
+          in: query
+          description: The opaque identifiers (e.g. Noids) of the objects to retrieve
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+      responses:
+        200:
+          description: An array of ObjectInfo
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ObjectInfo'
+definitions:
+  AccessIdentifier:
+    type: string
+  AccessRights:
+    type: object
+    required:
+      - read
+      - edit
+    properties:
+      embargo_date:
+        type: string
+        format: date
+      read:
+        type: array
+        items:
+          $ref: '#/definitions/AccessIdentifier'
+      edit:
+        type: array
+        items:
+          $ref: '#/definitions/AccessIdentifier'
+  FileDigest:
+    type: object
+    properties:
+      hex:
+        type: string
+      hashfunction:
+        type: string
+  Noid:
+    type: string
+  ObjectInfo:
+    type: object
+    required:
+      - "@context"
+      - class
+      - id
+      - access
+      - owner
+      - depositor
+      - date-added
+      - date-modified
+    properties:
+      "@context":
+        type: string
+      id:
+        $ref: '#/definitions/Noid'
+      class:
+        type: string
+      access:
+        $ref: '#/definitions/AccessRights'
+      owner:
+        $ref: '#/definitions/AccessIdentifier'
+      depositor:
+        $ref: '#/definitions/AccessIdentifier'
+      date-added:
+        type: string
+        format: dateTime
+      date-modified:
+        type: string
+        format: dateTime
+      filename:
+        type: string
+      filesize:
+        type: integer
+      mimetype:
+        type: string
+      thumbnail:
+        type: string
+      content:
+        type: string
+      isPartOf:
+        $ref: '#/definitions/Noid'
+      digest:
+        $ref: '#/definitions/FileDigest'
