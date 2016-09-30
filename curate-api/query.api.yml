@@ -83,9 +83,11 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     head:
-      summary: Return file metadata without the file payload
+      security:
+        - api_key: []
       tags:
         - Binary Files
+      summary: Return file metadata without the file payload
       responses:
         200:
           description: Success. Just look at those headers!
@@ -156,9 +158,11 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     head:
-      summary: Return thumbnail metadata without the file payload
+      security:
+        - api_key: []
       tags:
         - Binary Files
+      summary: Return thumbnail metadata without the file payload
       responses:
         200:
           description: Success. Just look at those headers!
