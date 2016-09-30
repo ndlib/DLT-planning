@@ -60,12 +60,24 @@ paths:
           schema:
             type: file
           headers:
+            Accepts-Ranges:
+              type: string
+              description: Indicates support of range requests; 'bytes'
+            Content-Length:
+              type: integer
+              description: Size of the content in bytes
             Content-Type:
               type: string
-              description: application/pdf
+              description: MIME Type of the content e.g. 'application/pdf
             Content-Disposition:
               type: string
-              description: inline; filename=example.pdf
+              description: Rendering and handling instcutions e.g. 'inline; filename=example.pdf'
+            ETag:
+              type: integer
+              description: Strong ETag generated for the content
+            Checksum-SHA256:
+              type: string
+              description: Base16 hash for the entire file; not included in range requests; not computed, passed along from underlying metadata
         404: # Could this be 422 for non-file objects?
           description: A non-file object or non-existent object was requested.
           schema:
@@ -85,16 +97,32 @@ paths:
           type: string
       responses:
         200:
-          description: Return the thumbnail
+          description: Return the thumbnail for the given object
           schema:
             type: file
           headers:
+            Accepts-Ranges:
+              type: string
+              description: Indicates support of range requests; 'bytes'
+            Content-Length:
+              type: integer
+              description: Size of the content in bytes
             Content-Type:
               type: string
-              description: image/jpeg
+              description: MIME Type of the content e.g. 'image/jpeg
             Content-Disposition:
               type: string
-              description: inline
+              description: Rendering and handling instcutions e.g. 'inline; filename=thumbnail.jpeg'
+            ETag:
+              type: integer
+              description: Strong ETag generated for the content
+            Checksum-SHA256:
+              type: string
+              description: Base16 hash for the entire file; not included in range requests; not computed, passed along from underlying metadata
+        404:
+          description: A non-existent thumbnail was requested.
+          schema:
+            $ref: '#/definitions/Error'
   /objects:
     get:
       security:
