@@ -58,8 +58,14 @@ paths:
         200:
           description: Retrieve the binary contents of the given file.
           schema:
-            type: string
-            format: binary
+            type: file
+          headers:
+            Content-Type:
+              type: string
+              description: application/pdf
+            Content-Disposition:
+              type: string
+              description: inline; filename=example.pdf
         404: # Could this be 422 for non-file objects?
           description: A non-file object or non-existent object was requested.
           schema:
