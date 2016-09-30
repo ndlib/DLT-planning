@@ -25,7 +25,7 @@ securityDefinitions:
     in: header
     description: You can request an API key by contacting Don Brower.
 paths:
-  /object/{id}:
+  /objects/{id}:
     get:
       security:
         - api_key: []
@@ -41,7 +41,7 @@ paths:
           description: An ObjectInfo
           schema:
             $ref: '#/definitions/ObjectInfo'
-  /object/{id}/content:
+  /objects/{id}/content:
     parameters:
     - name: id
       in: path
