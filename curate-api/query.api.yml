@@ -277,10 +277,10 @@ definitions:
         $ref: '#/definitions/AccessIdentifier'
       date-added:
         type: string
-        format: dateTime
+        format: date-time
       date-modified:
         type: string
-        format: dateTime
+        format: date-time
       filename:
         type: string
       filesize:
