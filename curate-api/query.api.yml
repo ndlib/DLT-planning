@@ -79,10 +79,16 @@ paths:
           type: string
       responses:
         200:
-          description: Retrieved binary contents of the thumbnail
+          description: Return the thumbnail
           schema:
-            type: string
-            format: binary
+            type: file
+          headers:
+            Content-Type:
+              type: string
+              description: image/jpeg
+            Content-Disposition:
+              type: string
+              description: inline
   /objects:
     get:
       security:
