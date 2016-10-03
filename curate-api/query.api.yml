@@ -68,7 +68,7 @@ paths:
               description: Size of the content in bytes
             Content-Type:
               type: string
-              description: MIME Type of the content e.g. 'application/pdf
+              description: MIME Type of the content e.g. 'application/pdf'
             Content-Disposition:
               type: string
               description: Rendering and handling instcutions e.g. 'inline; filename=example.pdf'
@@ -102,7 +102,7 @@ paths:
               description: Size of the content in bytes
             Content-Type:
               type: string
-              description: MIME Type of the content e.g. 'application/pdf
+              description: MIME Type of the content e.g. 'application/pdf'
             Content-Disposition:
               type: string
               description: Rendering and handling instcutions e.g. 'inline; filename=example.pdf'
@@ -143,7 +143,7 @@ paths:
               description: Size of the content in bytes
             Content-Type:
               type: string
-              description: MIME Type of the content e.g. 'image/jpeg
+              description: MIME Type of the content e.g. 'image/jpeg'
             Content-Disposition:
               type: string
               description: Rendering and handling instcutions e.g. 'inline; filename=thumbnail.jpeg'
@@ -177,7 +177,7 @@ paths:
               description: Size of the content in bytes
             Content-Type:
               type: string
-              description: MIME Type of the content e.g. 'image/jpeg
+              description: MIME Type of the content e.g. 'image/jpeg'
             Content-Disposition:
               type: string
               description: Rendering and handling instcutions e.g. 'inline; filename=thumbnail.jpeg'
